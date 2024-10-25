@@ -109,9 +109,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.nikatnight.budgetbase'
+    namespace 'com.nikatnight.starter'
     defaultConfig {
-        applicationId 'com.nikatnight.budgetbase'
+        applicationId 'com.nikatnight.starter'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

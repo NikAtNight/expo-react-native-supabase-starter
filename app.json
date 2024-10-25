@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "budgetbase",
-    "slug": "budgetbase",
-    "scheme": "budgetbase-app",
+    "name": "starter",
+    "slug": "starter",
+    "scheme": "starter-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,14 +20,14 @@
       "config": {
         "usesNonExemptEncryption": false
       },
-      "bundleIdentifier": "com.nikatnight.budgetbase"
+      "bundleIdentifier": "com.nikatnight.starter"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.nikatnight.budgetbase"
+      "package": "com.nikatnight.starter"
     },
     "experiments": {
       "typedRoutes": true

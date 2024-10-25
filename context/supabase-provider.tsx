@@ -1,10 +1,9 @@
 import { Session, User } from "@supabase/supabase-js";
-import axios from "axios";
+import { usePostUser } from "actions/userHooks";
 import { useRouter, useSegments, SplashScreen } from "expo-router";
 import { createContext, useContext, useEffect, useState } from "react";
 
 import { supabase } from "@/config/supabase";
-import "../axiosConfig";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,6 +38,8 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 	const [session, setSession] = useState<Session | null>(null);
 	const [initialized, setInitialized] = useState<boolean>(false);
 
+	const { mutateAsync, isError, error: err } = usePostUser();
+
 	const signUp = async (email: string, password: string) => {
 		const { error, data } = await supabase.auth.signUp({
 			email,
@@ -48,10 +49,11 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 			throw error;
 		}
 
-		await axios.post("/users/", {
-			email,
-			supabaseId: data?.user?.id,
-		});
+		await mutateAsync({ email, supabaseId: data?.user?.id });
+
+		if (isError) {
+			throw err;
+		}
 	};
 
 	const signInWithPassword = async (email: string, password: string) => {
@@ -66,7 +68,6 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 
 	const signOut = async () => {
 		const { error } = await supabase.auth.signOut();
-		// axios.defaults.headers.common["Authorization"] = null;
 		if (error) {
 			throw error;
 		}
@@ -80,7 +81,6 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 		});
 		return () => {
 			data.subscription.unsubscribe();
-			// axios.defaults.headers.common["Authorization"] = null;
 		};
 	}, []);
 
@@ -90,7 +90,6 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 		const inProtectedGroup = segments[0] === "(protected)";
 
 		if (session && !inProtectedGroup) {
-			// axios.defaults.headers.common["Authorization"] = `Bearer ${session.access_token}`;
 			router.replace("/(protected)/home");
 		} else if (!session) {
 			router.replace("/(public)/welcome");
